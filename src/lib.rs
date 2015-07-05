@@ -37,32 +37,10 @@ pub enum Acct {
 }
 
 pub struct DaemonSettings {
-    user:  Option<Acct>,
-    group: Option<Acct>,
-    umask: Option<mode_t>,
+    pub user:  Option<Acct>,
+    pub group: Option<Acct>,
+    pub umask: Option<mode_t>,
 }
-
-impl DaemonSettings {
-    pub fn default() -> DaemonSettings {
-        DaemonSettings { user: None, group: None, umask: None }
-    }
-
-    pub fn user(mut self, user: Acct) -> DaemonSettings{
-        self.user = Some(user);
-        self
-    }
-
-    pub fn group(mut self, group: Acct) -> DaemonSettings {
-        self.group = Some(group);
-        self
-    }
-
-    pub fn umask(mut self, umask: mode_t) -> DaemonSettings {
-        self.umask = Some(umask);
-        self
-    }
-}
-
 
 pub fn daemonize(settings: DaemonSettings) -> io::Result<()> {
     // finish up standard in/out
@@ -116,8 +94,8 @@ pub fn daemonize(settings: DaemonSettings) -> io::Result<()> {
 
     // close standard fds
     try!(unix::close(0));
-    try!(unix::close(0));
-    try!(unix::close(0));
+    try!(unix::close(1));
+    try!(unix::close(2));
 
     Ok(())
 }
