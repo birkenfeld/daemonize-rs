@@ -21,7 +21,7 @@
 // -----------------------------------------------------------------------------
 
 use std::io;
-use libc::funcs::posix88::unistd;
+use libc;
 use std::os::raw::c_int;
 use std::os::unix::raw::{ gid_t, uid_t, mode_t };
 
@@ -33,7 +33,7 @@ mod ffi {
 }
 
 pub fn fork() -> io::Result<bool> {
-    let ret = unsafe { unistd::fork() };
+    let ret = unsafe { libc::fork() };
     if ret < 0 {
         Err(io::Error::last_os_error())
     } else if ret == 0 {
@@ -48,7 +48,7 @@ pub fn umask(mode: mode_t) -> mode_t {
 }
 
 pub fn setsid() -> io::Result<()> {
-    let ret = unsafe { unistd::setsid() };
+    let ret = unsafe { libc::setsid() };
     if ret < 0 {
         Err(io::Error::last_os_error())
     } else {
@@ -57,7 +57,7 @@ pub fn setsid() -> io::Result<()> {
 }
 
 pub fn close(fd: c_int) -> io::Result<()> {
-    let ret = unsafe { unistd::close(fd) };
+    let ret = unsafe { libc::close(fd) };
     if ret < 0 {
         Err(io::Error::last_os_error())
     } else {
@@ -66,11 +66,11 @@ pub fn close(fd: c_int) -> io::Result<()> {
 }
 
 pub fn geteuid() -> uid_t {
-    unsafe { unistd::geteuid() }
+    unsafe { libc::geteuid() }
 }
 
 pub fn setgid(gid: gid_t) -> io::Result<()> {
-    let ret = unsafe { unistd::setgid(gid) };
+    let ret = unsafe { libc::setgid(gid) };
     if ret < 0 {
         Err(io::Error::last_os_error())
     } else {
@@ -79,7 +79,7 @@ pub fn setgid(gid: gid_t) -> io::Result<()> {
 }
 
 pub fn setuid(uid: uid_t) -> io::Result<()> {
-    let ret = unsafe { unistd::setuid(uid) };
+    let ret = unsafe { libc::setuid(uid) };
     if ret < 0 {
         Err(io::Error::last_os_error())
     } else {
