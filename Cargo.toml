@@ -1,8 +1,8 @@
 [package]
 name = "daemonize"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Georg Brandl <georg@python.org>"]
 
 [dependencies]
-libc = "0.2.*"
-users = "0.4.*"
+libc = "0.2"
+users = "0.5"

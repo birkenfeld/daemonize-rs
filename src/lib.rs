@@ -30,6 +30,7 @@ use std::io::{self, Write};
 use std::process;
 
 use libc::{gid_t, uid_t, mode_t};
+use users::os::unix::UserExt;
 
 
 pub enum Acct {
@@ -72,7 +73,7 @@ pub fn daemonize(settings: DaemonSettings) -> io::Result<()> {
             };
             match group {
                 None => return Err(io::Error::from_raw_os_error(2)), // ENOENT
-                Some(group) => try!(unix::setgid(group.gid)),
+                Some(group) => try!(unix::setgid(group.gid())),
             }
         }
         if let Some(acct) = settings.user {
@@ -83,8 +84,8 @@ pub fn daemonize(settings: DaemonSettings) -> io::Result<()> {
             match user {
                 None => return Err(io::Error::from_raw_os_error(2)),
                 Some(user) => {
-                    try!(unix::setuid(user.uid));
-                    env::set_var("HOME", user.home_dir);
+                    try!(unix::setuid(user.uid()));
+                    env::set_var("HOME", user.home_dir());
                 },
             }
         }
