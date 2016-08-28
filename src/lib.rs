@@ -26,9 +26,10 @@ extern crate users;
 mod unix;
 
 use std::env;
-use std::io::{ self, Write };
-use std::os::unix::raw::{ gid_t, uid_t, mode_t };
+use std::io::{self, Write};
 use std::process;
+
+use libc::{gid_t, uid_t, mode_t};
 
 
 pub enum Acct {

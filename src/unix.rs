@@ -22,11 +22,11 @@
 
 use std::io;
 use libc;
+use libc::{uid_t, gid_t, mode_t};
 use std::os::raw::c_int;
-use std::os::unix::raw::{ gid_t, uid_t, mode_t };
 
 mod ffi {
-    use std::os::unix::raw::mode_t;
+    use libc::mode_t;
     extern {
         pub fn umask(mode: mode_t) -> mode_t;
     }
